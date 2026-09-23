@@ -1,0 +1,2748 @@
+/* =========================================================
+   Atomic Strategy — Brand & Marketing Strategy Studio
+   Design system ("Old-school business. New-school tools."):
+   Espresso Brown darks, Cream text, Hazelnut as the one warm accent
+   Garet (headings/display/UI chrome/wordmark) + The Seasons (body)
+   — the brand's actual licensed fonts, supplied in /new branding/fonts
+   ========================================================= */
+
+@font-face {
+  font-family: "Garet";
+  src: url("assets/fonts/garet/Garet-Book.woff2") format("woff2"),
+       url("assets/fonts/garet/Garet-Book.woff") format("woff"),
+       url("assets/fonts/garet/Garet-Book.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Garet";
+  src: url("assets/fonts/garet/Garet-Heavy.woff2") format("woff2"),
+       url("assets/fonts/garet/Garet-Heavy.woff") format("woff"),
+       url("assets/fonts/garet/Garet-Heavy.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "The Seasons";
+  src: url("assets/fonts/the-seasons/The Seasons Light.ttf") format("truetype");
+  font-weight: 300; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "The Seasons";
+  src: url("assets/fonts/the-seasons/The Seasons Regular.ttf") format("truetype");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "The Seasons";
+  src: url("assets/fonts/the-seasons/The Seasons Bold.ttf") format("truetype");
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "The Seasons";
+  src: url("assets/fonts/the-seasons/The Seasons Light Italic.ttf") format("truetype");
+  font-weight: 300; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "The Seasons";
+  src: url("assets/fonts/the-seasons/The Seasons Italic.ttf") format("truetype");
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "The Seasons";
+  src: url("assets/fonts/the-seasons/The Seasons Bold Italic.ttf") format("truetype");
+  font-weight: 700; font-style: italic; font-display: swap;
+}
+
+@font-face {
+  font-family: "Horizon";
+  src: url("fonts/horizon/Horizon.woff2") format("woff2"),
+       url("fonts/horizon/Horizon.otf") format("opentype");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+
+@font-face {
+  font-family: "PP Neue Montreal";
+  src: url("fonts/horizon/neue-montreal/ppneuemontreal-thin.otf") format("opentype");
+  font-weight: 100; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "PP Neue Montreal";
+  src: url("fonts/horizon/neue-montreal/ppneuemontreal-book.otf") format("opentype");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "PP Neue Montreal";
+  src: url("fonts/horizon/neue-montreal/ppneuemontreal-italic.otf") format("opentype");
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "PP Neue Montreal";
+  src: url("fonts/horizon/neue-montreal/ppneuemontreal-medium.otf") format("opentype");
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "PP Neue Montreal";
+  src: url("fonts/horizon/neue-montreal/ppneuemontreal-semibolditalic.otf") format("opentype");
+  font-weight: 600; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "PP Neue Montreal";
+  src: url("fonts/horizon/neue-montreal/ppneuemontreal-bold.otf") format("opentype");
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+
+/* Smooth native crossfade between pages (index ↔ case-studies ↔ the four
+   service-*.html pages) — browsers that support the View Transitions API
+   (Chromium-based ones, at least) animate the old page fading into the new
+   one automatically; everywhere else this is simply ignored and navigation
+   just works as normal. */
+@view-transition {
+  navigation: auto;
+}
+
+/* Named shared elements: identical header markup (.brand-badge/.hero-nav/
+   .hero-top-right) now sits at the same spot on every page (index's hero
+   and every cs-header alike, see their rules below), so instead of
+   crossfading it away and back in, the browser morphs it in place between
+   pages — this is what actually sells "the page didn't change" rather than
+   "a new page faded in". Harmless no-op in browsers without support. */
+.brand-badge {
+  view-transition-name: site-logo;
+}
+
+.hero-nav {
+  view-transition-name: site-nav;
+}
+
+.hero-top-right {
+  view-transition-name: site-cta;
+}
+
+/* Same idea for the service-switch pill bar: the bar itself stays put and
+   the active highlight slides to its new tab instead of the whole thing
+   fading out/in when you jump between service pages. */
+.svc-switch {
+  view-transition-name: svc-switch-bar;
+}
+
+.svc-switch-item.is-active {
+  view-transition-name: svc-switch-active;
+}
+
+/* Previous accent palette, before the "Midnight Coral" rebrand below —
+   kept here for an easy rollback if needed:
+   --bg-deep: #285185; --bg-base: #285185;
+   --bg-raised: #6f4849; --bg-raised-2: #8d6667;
+   --border-soft: rgba(204, 217, 226, 0.09); --border-strong: rgba(204, 217, 226, 0.2);
+   --amber: #d67940; --amber-bright: #f4975e; --amber-dim: #b66736;
+   --amber-glow: rgba(214, 121, 64, 0.28); --accent-ink: #1c2f4d;
+   --magenta: #ccd9e2; --magenta-bright: #dbe8f1;
+   --magenta-glow: rgba(204, 217, 226, 0.25);
+   --yellow: #d67940; --yellow-glow: rgba(214, 121, 64, 0.22);
+   --text-primary: #ccd9e2; --text-secondary: #ad8384; --text-muted: #7a95b4;
+*/
+:root {
+  /* "Hazelnut & Espresso" palette — Pantone-referenced brand coloring:
+     Hazelnut 50% (human/approachable) as the one warm accent, Brown 25%
+     (heritage/stability), Black 20% (confidence/performance) as the
+     dark base, Cream 5% (butter/warmth) as text and highlights */
+  --bg-deep: #3f1f0f;    /* Espresso (Black, warmed toward Brown) */
+  --bg-base: #3f1f0f;
+  --bg-raised: #4a331f;  /* Brown */
+  --bg-raised-2: #5c4128; /* lighter Brown, for a second raised layer */
+  --border-soft: rgba(246, 238, 223, 0.09);
+  --border-strong: rgba(246, 238, 223, 0.2);
+
+  /* Hazelnut — the one warm accent */
+  --amber: #c9a16c;
+  --amber-bright: #dcb98c;
+  --amber-dim: #a9814f;
+  --amber-glow: rgba(201, 161, 108, 0.28);
+  --accent-ink: #1e140c; /* Espresso text on accent (Hazelnut) surfaces */
+
+  /* Secondary accent for kickers, badges & doodles — Cream, the softer
+     counterpoint to the Hazelnut primary accent */
+  --magenta: #f6eedf;
+  --magenta-bright: #fffbf3;
+  --magenta-glow: rgba(246, 238, 223, 0.25);
+  --yellow: #c9a16c;
+  --yellow-glow: rgba(201, 161, 108, 0.22);
+
+  /* Text */
+  --text-primary: #f6eedf;   /* Cream */
+  --text-secondary: #dcb98c; /* Hazelnut-bright */
+  --text-muted: #a68f78;
+
+  --font-display: "Garet", "Segoe UI", sans-serif;
+  --font-body: "The Seasons", Georgia, serif;
+  --font-wordmark: "Garet", var(--font-display);
+  --font-heading: "Garet", "Helvetica Neue", Arial, sans-serif;
+
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+
+  --shadow-soft: 0 20px 60px rgba(0, 0, 0, 0.55);
+}
+
+/* Garet has no Greek glyphs, so Greek headings/UI chrome were silently
+   falling back to the plain system sans (Helvetica/Arial). Poppins has
+   full Greek coverage and reads as a close match to Garet's geometric
+   weight, so swap the display/heading tokens to it in Greek mode instead
+   of letting the browser pick a fallback per character. */
+html[lang="el"] {
+  --font-display: "Poppins", "Segoe UI", sans-serif;
+  --font-heading: "Poppins", "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ---------- Reset ---------- */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--amber) var(--bg-deep);
+}
+
+::-webkit-scrollbar {
+  width: 11px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-deep);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--amber-dim);
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--bg-deep);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--amber);
+}
+
+body {
+  margin: 0;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Smooth page-to-page navigation, manual fallback only: browsers without
+   native View Transition support fade the body in on load (on index.html
+   this just plays underneath the opaque loader, so it's invisible there —
+   harmless) and script.js's initPageTransitions() adds .is-page-fading-out
+   just before following an internal link so the outgoing page fades to
+   match. html.has-native-transitions (set synchronously in <head>, before
+   first paint) means the browser's own cross-document transition handles
+   this instead — layering our own opacity animation on top of that as
+   well was what caused the flash/flicker on text during navigation. */
+html:not(.has-native-transitions) body {
+  animation: pageFadeIn 0.4s ease both;
+  transition: opacity 0.28s ease;
+}
+
+@keyframes pageFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+body.is-page-fading-out {
+  opacity: 0;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 0.5em;
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--amber);
+  color: var(--accent-ink);
+  padding: 12px 20px;
+  border-radius: 0 0 8px 0;
+  z-index: 100;
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  left: 0;
+}
+
+/* ---------- Intro loader ----------
+   The hero itself IS the loading screen — video already playing behind it,
+   nav/slogan/logo/explore hidden until the bar finishes (see the
+   body.is-loading rules further down) — with "Atomic"/the cycling word
+   overlaid on top of the video, settling on "Strategy" right as the bar
+   completes, then handing off into the hero reveal transition. */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #3f1f0f;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.6s ease, visibility 0s linear 0s;
+}
+
+.loader.is-done {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.6s ease, visibility 0s linear 0.6s;
+}
+
+body.is-loading {
+  overflow: hidden;
+}
+
+.loader-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15em;
+  text-align: center;
+  font-family: var(--font-wordmark);
+  font-weight: 400;
+}
+
+.loader-atomic {
+  display: none;
+  font-size: clamp(2.2rem, 7vw, 5rem);
+  letter-spacing: 0.02em;
+  color: var(--text-primary);
+  /* Extra legibility over the moving hero video underneath. */
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+}
+
+.loader-cycle {
+  display: none;
+  min-height: 1.15em;
+  font-size: clamp(1.5rem, 4.6vw, 3.2rem);
+  letter-spacing: 0.02em;
+  color: var(--amber);
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.07s ease, transform 0.07s ease;
+}
+
+.loader-cycle.is-flip {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+.loader-cycle.is-final {
+  color: var(--amber-bright);
+  text-shadow: 0 0 22px var(--amber-glow);
+  animation: loader-final-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes loader-final-pop {
+  0% { transform: scale(0.8); text-shadow: 0 0 0 transparent; }
+  55% { transform: scale(1.16); text-shadow: 0 0 30px var(--amber-glow); }
+  100% { transform: scale(1); text-shadow: 0 0 22px var(--amber-glow); }
+}
+
+.loader-bar {
+  margin-top: 1.6em;
+  width: min(220px, 50vw);
+  height: 3px;
+  border-radius: var(--radius-pill);
+  background: var(--border-soft);
+  overflow: hidden;
+}
+
+.loader-bar-fill {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--amber), var(--amber-bright));
+  border-radius: var(--radius-pill);
+  transition: width 2s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader { transition: none; }
+  .loader-cycle { transition: none; }
+  .loader-cycle.is-final { animation: none; }
+  .loader-bar-fill { transition: none; }
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 26px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 0.95rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--amber-bright), var(--amber));
+  color: var(--accent-ink);
+  box-shadow: 0 8px 24px var(--amber-glow);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px var(--amber-glow);
+}
+
+/* The nav "Let's talk" CTA specifically — matches the hero/dark theme's
+   own Deep Black rather than standing out in the accent color, so it reads
+   as part of the surrounding chrome instead of a pop-color button.
+   Hardcoded to the dark-theme black (not var(--bg-*), which further
+   down the page resolves to the light theme's white — see #services
+   etc.) since this button appears both there and in the still-dark
+   hero/floating-nav. */
+.btn-cta-violet {
+  background: #1e140c;
+  color: #f6eedf;
+  box-shadow: none;
+}
+
+.btn-cta-violet:hover {
+  background: #2e2013;
+  box-shadow: 0 8px 20px rgba(30, 20, 12, 0.4);
+}
+
+.btn-ghost {
+  background: transparent;
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+
+.btn-ghost:hover {
+  border-color: var(--amber);
+  color: var(--amber-bright);
+}
+
+.btn-small {
+  padding: 9px 18px;
+  font-size: 0.85rem;
+}
+
+/* ---------- Brand badge, top-left ---------- */
+.brand-badge {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  z-index: 2;
+  display: inline-flex;
+  text-decoration: none;
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.brand-badge:hover {
+  transform: scale(1.06);
+  filter: drop-shadow(0 0 10px var(--amber-glow));
+}
+
+/* Logo, nav options and slogan stay hidden while the hero doubles as the
+   loading screen, then fade in together once script.js's loader finish()
+   removes body.is-loading (bar complete) — reusing that existing timing
+   instead of adding new JS for the reveal. */
+.hero .brand-badge,
+.hero .hero-nav,
+.hero .hero-top-right,
+.hero .hero-copy,
+.hero .hero-scroll {
+  transition: opacity 0.8s ease 0.1s;
+}
+
+body.is-loading .hero .brand-badge,
+body.is-loading .hero .hero-nav,
+body.is-loading .hero .hero-top-right,
+body.is-loading .hero .hero-copy,
+body.is-loading .hero .hero-scroll {
+  /* !important: script.js's scroll-driven header/slogan fade sets an
+     inline opacity (starting at 1, at scroll progress 0) on these same
+     elements on load, which would otherwise beat this rule outright
+     regardless of selector specificity. */
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.brand-badge-logo {
+  height: 200px;
+  width: auto;
+  display: block;
+  /* the source PNG (symbol-only mark, square canvas) has transparent
+     padding baked in around it, so pull it up/left by that much to
+     sit truly flush instead of visibly inset */
+  margin: -70px 0 0 -20px;
+}
+
+/* Wordmark-style crop (wide strip, tightly cropped already) instead of
+   the square symbol-only mark — different aspect ratio, so its own size
+   and (much smaller) padding compensation. */
+.brand-badge-logo--wide {
+  height: 44px;
+  margin: -4px 0 0 -4px;
+}
+
+.loader-mark {
+  height: min(260px, 48vw);
+  width: auto;
+  /* proportional to the clamped height above (not a fixed px), so the
+     compensation stays correct at every viewport instead of overlapping
+     the wordmark on narrow screens where 48vw shrinks it well below 260px */
+  margin-bottom: calc(min(260px, 48vw) * -0.26);
+}
+
+.loader-wordmark {
+  height: min(48px, 9vw);
+  width: auto;
+  margin-top: calc(min(48px, 9vw) * -0.1);
+}
+
+.footer-slogan {
+  font-family: "The Seasons", var(--font-body);
+  font-style: italic;
+}
+
+.brand-badge-text {
+  font-family: "The Seasons", var(--font-body);
+  font-weight: 700;
+  font-size: 0.72rem;
+  line-height: 1.2;
+  letter-spacing: normal;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+/* The hero's own badge (top-left) reads white and considerably larger,
+   right in the corner — the floating pill nav reuses the same
+   .brand-badge-text markup/class at its original compact size and theme
+   color, so this is scoped to just the hero instance rather than changed
+   on the shared rule above. */
+.hero .brand-badge-text {
+  font-size: 2rem;
+  color: #8a5a3c;
+}
+
+/* ---------- Nav (embedded in hero) ---------- */
+.hero-top-right {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* ---------- Section nav, top-center ---------- */
+.hero-nav {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  /* Without this, flex's default align-items: stretch lets the
+     .nav-dropdown wrapper (taller than a plain <a>, thanks to the
+     trigger's chevron) stretch the whole flex row, sitting its button
+     text lower than the other links' top-aligned baseline. */
+  align-items: center;
+  gap: clamp(20px, 3vw, 36px);
+}
+
+.hero-nav a,
+.hero-nav .nav-dropdown-trigger {
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #f6eedf;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.hero-nav a:hover,
+.hero-nav .nav-dropdown-trigger:hover {
+  color: var(--amber-bright);
+}
+
+/* ---------- Floating navbar ----------
+   Hidden (and non-interactive) while the hero is the active panel — its own
+   embedded nav covers that — then fades in as a compact pill once scrolled
+   past it, and stays fixed at the top for the rest of the page. Toggled via
+   .is-visible from the pinned-scroll active-panel tracking in script.js. */
+.floating-nav {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: clamp(20px, 3vw, 40px);
+  padding: 10px 10px 10px 22px;
+  background: transparent;
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, -10px);
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s;
+}
+
+.floating-nav.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s;
+}
+
+.floating-nav-logo {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.floating-nav-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 2.4vw, 28px);
+}
+
+.floating-nav-links a,
+.floating-nav-links .nav-dropdown-trigger {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.floating-nav-links a:hover,
+.floating-nav-links .nav-dropdown-trigger:hover {
+  color: var(--amber-bright);
+}
+
+@media (max-width: 900px) {
+  /* Drop the services dropdown from the compact pill on narrow viewports —
+     it's still reachable from the hero's own nav further down the page. */
+  .floating-nav {
+    gap: 14px;
+    padding: 8px 8px 8px 16px;
+  }
+  .floating-nav-links {
+    gap: 12px;
+  }
+  .floating-nav-links .nav-dropdown {
+    display: none;
+  }
+}
+
+@media (max-width: 620px) {
+  .floating-nav-logo {
+    display: none;
+  }
+}
+
+/* ---------- Services mega-menu dropdown, off the top nav ---------- */
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-dropdown-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.nav-dropdown-trigger::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg) translateY(-2px);
+  transition: transform 0.2s ease;
+}
+
+.nav-dropdown-trigger:hover,
+.nav-dropdown.is-open .nav-dropdown-trigger {
+  color: var(--amber-bright);
+}
+
+.nav-dropdown.is-open .nav-dropdown-trigger::after {
+  transform: rotate(-135deg) translateY(1px);
+}
+
+.nav-dropdown-panel {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-top: 18px;
+  transform: translate(-50%, -8px);
+  width: min(620px, 90vw);
+  z-index: 5;
+  /* iOS-style frosted glass: colorless (neutral charcoal, not a brand
+     hue) and opaque enough that whatever's behind it — page content,
+     large hero titles — reads as a blur instead of bleeding through and
+     fighting the menu's own text for legibility, even in browsers where
+     backdrop-filter itself doesn't render. Always dark, regardless of
+     page theme, so its own text (hardcoded light below, not var-driven)
+     stays legible on light pages too instead of inheriting that page's
+     flipped --text-primary/--text-secondary. */
+  background: rgba(18, 18, 18, 0.94);
+  backdrop-filter: blur(28px) saturate(140%);
+  -webkit-backdrop-filter: blur(28px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: 24px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  /* While closed it collapses to nothing (after the fade-out), otherwise its
+     invisible box still stretches the hero panel's scrollable area — on a
+     phone that let touches scroll inside the panel instead of the page. */
+  max-height: 2000px;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s,
+    max-height 0s linear 0.2s, padding 0s linear 0.2s, border-width 0s linear 0.2s;
+}
+
+.nav-dropdown:not(.is-open) .nav-dropdown-panel {
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-width: 0;
+  overflow: hidden;
+}
+
+.nav-dropdown.is-open .nav-dropdown-panel {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s;
+}
+
+.nav-dropdown-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 28px;
+}
+
+.nav-dropdown-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.nav-dropdown-item:hover {
+  background: var(--bg-raised-2);
+}
+
+.nav-dropdown-icon {
+  flex: none;
+  font-size: 1.2rem;
+  line-height: 1;
+  margin-top: 2px;
+  color: var(--amber);
+}
+
+/* Sized in em off the parent's own font-size, matching how the emoji
+   it replaced used to scale, with color coming from currentColor. */
+.icon-svg {
+  width: 1em;
+  height: 1em;
+  display: block;
+}
+
+.nav-dropdown-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav-dropdown-text strong {
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.nav-dropdown-text span {
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
+.nav-dropdown-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-soft);
+  text-decoration: none;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* The panel itself is always dark glass (see .nav-dropdown-panel above),
+   whatever page it's floating over — so its own text needs fixed light
+   colors here rather than the var(--text-primary)/var(--text-secondary)/
+   var(--border-soft) above, which flip to dark on the cream page and
+   would otherwise render dark-on-dark. */
+.nav-dropdown-panel .nav-dropdown-text strong {
+  color: #f6eedf;
+}
+
+.nav-dropdown-panel .nav-dropdown-text span {
+  color: #dcb98c;
+}
+
+.nav-dropdown-panel .nav-dropdown-footer {
+  color: #dcb98c;
+  border-top-color: rgba(255, 255, 255, 0.14);
+}
+
+.nav-dropdown-panel .nav-dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.nav-dropdown-footer-cta {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--amber-bright);
+}
+
+.nav-dropdown-footer-cta span {
+  transition: transform 0.2s ease;
+  display: inline-block;
+}
+
+.nav-dropdown-footer:hover .nav-dropdown-footer-cta span {
+  transform: translateX(4px);
+}
+
+@media (max-width: 620px) {
+  /* .nav-dropdown-panel centers itself (left: 50%) on its nearest
+     positioned ancestor, which is normally .nav-dropdown — just the
+     trigger button's own narrow box, not the viewport. On mobile the nav
+     row isn't full-width/centered-as-a-block the way it is on desktop, so
+     that anchor sits off to one side and the panel opens badly off-center.
+     Dropping .nav-dropdown's own position: relative here makes it
+     transparent to positioning, so the panel instead anchors on the next
+     ancestor up — .hero-nav — which *is* centered on the viewport. */
+  .nav-dropdown {
+    position: static;
+  }
+
+  .nav-dropdown-panel {
+    width: 88vw;
+    padding: 18px;
+  }
+
+  .nav-dropdown-grid {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 88vh;
+  display: flex;
+  align-items: center;
+  padding: 140px 0 120px;
+}
+
+/* One centered line, sitting above the hero title/slogan — with the
+   slogan itself on top (z-index 0 vs. the hero copy's own stacking
+   context above it). */
+.hero-watermark {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+  /* Disabled for now — flip this back to visible (and the matching rule
+     on .hero-watermark-fill below) to bring the "ATOMIC STRATEGY"
+     background wordmark back. */
+  display: none;
+}
+
+.hero-watermark-word {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: max-content;
+  font-family: var(--font-wordmark);
+  font-weight: 400;
+  font-size: clamp(2rem, 6vw, 4.6rem);
+  letter-spacing: 0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--magenta-glow);
+  white-space: nowrap;
+}
+
+/* A solid-black duplicate of each word, revealed only inside a circle
+   that script.js keeps synced to the atom mark's live position/size — so
+   the letters read as a dark "cutout" specifically where it passes behind
+   them, while the ghost outline above stays untouched everywhere else. */
+.hero-watermark-fill {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+  --blob-x: 50%;
+  --blob-y: 50%;
+  --blob-r: 0px;
+  -webkit-mask-image: radial-gradient(circle var(--blob-r) at var(--blob-x) var(--blob-y), #000 0%, #000 55%, transparent 100%);
+  mask-image: radial-gradient(circle var(--blob-r) at var(--blob-x) var(--blob-y), #000 0%, #000 55%, transparent 100%);
+  /* Disabled alongside .hero-watermark above — see the note there. */
+  display: none;
+}
+
+/* The atom "lights up" whatever letters it's currently passing behind —
+   revealed through the exact same mask circle script.js keeps synced to
+   its live position (see --blob-x/--blob-y/--blob-r on .hero-watermark-fill). */
+.hero-watermark-fill .hero-watermark-word {
+  color: var(--amber-bright);
+  -webkit-text-stroke: 0;
+  text-shadow: 0 0 24px var(--amber-glow), 0 0 48px var(--amber-glow);
+}
+
+/* ---------- Decorative doodles ---------- */
+.doodles {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.doodle {
+  position: absolute;
+  opacity: 0.55;
+}
+
+.doodle-ring {
+  width: 46px;
+  height: 46px;
+  border: 2px dashed var(--magenta);
+  border-radius: 50%;
+}
+
+.doodle-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--yellow);
+}
+
+.doodle-plus {
+  width: 22px;
+  height: 22px;
+}
+
+.doodle-plus::before,
+.doodle-plus::after {
+  content: "";
+  position: absolute;
+  background: var(--yellow);
+}
+
+.doodle-plus::before {
+  left: 50%;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  transform: translateX(-50%);
+}
+
+.doodle-plus::after {
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  transform: translateY(-50%);
+}
+
+.doodle-scribble {
+  width: 60px;
+  height: 30px;
+  border: 2px solid var(--magenta-bright);
+  border-radius: 50%;
+  transform: rotate(-12deg);
+  opacity: 0.35;
+}
+
+.doodle-1 { top: 14%; left: 6%; }
+.doodle-2 { top: 68%; left: 12%; }
+.doodle-3 { top: 24%; left: 46%; }
+.doodle-4 { top: 78%; left: 52%; }
+.doodle-5 { top: 10%; right: 8%; }
+.doodle-6 { top: 55%; right: 4%; }
+
+.doodle {
+  animation: doodleFloat 7s ease-in-out infinite;
+}
+
+.doodle-1 { animation-duration: 6.5s; animation-delay: 0s; }
+.doodle-2 { animation-duration: 8s; animation-delay: 0.6s; }
+.doodle-3 { animation-duration: 7.2s; animation-delay: 1.2s; }
+.doodle-4 { animation-duration: 9s; animation-delay: 0.3s; }
+.doodle-5 { animation-duration: 6.8s; animation-delay: 0.9s; }
+.doodle-6 { animation-duration: 7.6s; animation-delay: 1.5s; }
+
+@keyframes doodleFloat {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(0, -14px) rotate(6deg); }
+}
+
+.doodle-scribble {
+  animation-name: doodleFloatScribble;
+}
+
+@keyframes doodleFloatScribble {
+  0%, 100% { transform: rotate(-12deg) translateY(0); }
+  50% { transform: rotate(-6deg) translateY(-10px); }
+}
+
+.hero-glow {
+  position: absolute;
+  left: 50%;
+  top: 18%;
+  width: 60%;
+  height: 64%;
+  transform: translateX(-50%);
+  background: radial-gradient(50% 50% at 50% 50%, var(--amber-glow), transparent 72%);
+  filter: blur(20px);
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 780px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* The hero's own copy breaks out of that centered 780px column and off
+   the hero's default vertical centering — both title lines now sit
+   together at the hero's bottom edge, one at the left, one at the right
+   (see .hero-title below). */
+.hero .hero-inner {
+  /* .hero is a flex row with this as its only flow child, so without an
+     explicit width it shrink-wraps to content instead of filling the
+     section — which is exactly what let max-width: none quietly do
+     nothing. */
+  width: 100%;
+  max-width: none;
+  text-align: initial;
+  align-self: flex-end;
+}
+
+.hero-title {
+  font-family: "The Seasons", var(--font-body);
+  font-size: clamp(2rem, min(6vw, 9vh), 4.6rem);
+  color: #ebe7e4;
+  letter-spacing: -0.02em;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 5vw, 64px);
+}
+
+.hero-title-line-1,
+.hero-title-line-2 {
+  text-align: left;
+  max-width: 65%;
+}
+
+.hero-title-line-1 {
+  align-self: flex-start;
+}
+
+.hero-title-line-2 {
+  align-self: flex-end;
+}
+
+/* Still gets its glow treatment, just in white rather than the accent
+   color — "all the letters in the hero should be white" per request. */
+.glow-text {
+  color: #ebe7e4;
+}
+
+@keyframes glowPulse {
+  0%, 100% { text-shadow: 0 0 12px rgba(246, 238, 223, 0.4); }
+  50% { text-shadow: 0 0 26px rgba(246, 238, 223, 0.6), 0 0 10px rgba(246, 238, 223, 0.8); }
+}
+
+.hero-scroll {
+  position: absolute;
+  left: 50%;
+  bottom: 40px;
+  transform: translateX(-50%);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero-scroll-mouse {
+  position: relative;
+  display: block;
+  width: 22px;
+  height: 36px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 12px;
+  transition: border-color 0.2s ease;
+}
+
+.hero-scroll:hover .hero-scroll-mouse {
+  border-color: var(--amber);
+}
+
+.hero-scroll-dot {
+  position: absolute;
+  left: 50%;
+  top: 6px;
+  width: 4px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--amber);
+  box-shadow: 0 0 6px 1px var(--amber-glow);
+  transform: translateX(-50%);
+  animation: heroScrollDot 1.8s ease-in-out infinite;
+}
+
+@keyframes heroScrollDot {
+  0% { transform: translate(-50%, 0); opacity: 1; }
+  60% { transform: translate(-50%, 14px); opacity: 0; }
+  61% { transform: translate(-50%, 0); opacity: 0; }
+  85% { opacity: 1; }
+  100% { transform: translate(-50%, 0); opacity: 1; }
+}
+
+/* ---------- Sections ---------- */
+.section {
+  position: relative;
+  overflow: hidden;
+  padding: 88px 0;
+}
+
+/* Soft zoom as sections scroll through the viewport — progressive
+   enhancement only; browsers without scroll-driven animation support
+   just see the sections at normal scale (native scroll unaffected). */
+@supports (animation-timeline: view()) {
+  .section {
+    animation: sectionZoom linear both;
+    animation-timeline: view();
+  }
+}
+
+@keyframes sectionZoom {
+  0%   { transform: scale(0.92); opacity: 0.55; }
+  50%  { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0.92); opacity: 0.55; }
+}
+
+/* ---------- Pinned scrollytelling mode ----------
+   Enabled by JS (html.pin-mode, set synchronously in <head> when the
+   browser supports position: sticky). The hero + sections stay pinned
+   in one fixed viewport; scrolling crossfades between them instead of
+   moving the page. Crossfade opacity is driven by script.js reading
+   real scroll position (not CSS scroll-timeline — a view-timeline
+   anchored to #pinWrap can't reach a true 0% when there isn't a full
+   viewport of scrollable space above it, which is the case here right
+   below the header). Native scroll itself is never intercepted. */
+html.pin-mode .section {
+  animation: none;
+}
+
+html.pin-mode #pinWrap {
+  position: relative;
+  /* Only the hero + the video showcase are still pinned/crossfaded now —
+     Services onward scroll normally below this (see index.html). Sized so
+     the pinned range's scrollable distance (this minus one viewport) is
+     ~17 "notches" of ~100px each at a typical viewport height — matching
+     script.js's VIDEO_MORPH_END, so the pin releases into normal scroll
+     right as the video finishes landing rather than leaving a dead pinned
+     stretch after it. */
+  height: 289vh;
+}
+
+html.pin-mode .pin-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  /* svh = the height actually visible with mobile browser toolbars showing,
+     so the hero's bottom (slogan + Explore) never hides behind Safari's
+     bottom bar; vh above is the fallback for older browsers. */
+  height: 100svh;
+  overflow: hidden;
+}
+
+/* A simple ring that trails the cursor (and follows the same scripted path
+   as it drifts through the rest of the scroll) — script.js drives the same
+   position/scale/opacity/rotation keyframes it always has; only the look
+   changed, from a multi-ring atom icon down to one clean circle.
+   Pin-mode only (no scroll-driven crossfade to drive it otherwise) — hidden
+   by default so its child's absolute/inset:0 never falls back to sizing
+   itself against the viewport instead of this box. */
+.pin-bg-atom {
+  display: none;
+}
+
+html.pin-mode .pin-bg-atom {
+  display: block;
+  position: absolute;
+  top: 46%;
+  left: 78%;
+  width: 64px;
+  height: 64px;
+  z-index: 0;
+  opacity: 0.55;
+  transform: translate(-50%, -50%) scale(0.15);
+  will-change: transform, opacity, left, top;
+}
+
+.atom-ring-simple {
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--amber);
+  border-radius: 50%;
+  box-shadow: 0 0 20px var(--amber-glow);
+}
+
+/* Hero background video that shrinks into a small framed panel as you
+   scroll, then freezes there — a fixed-position element (sibling of the
+   hero panel, not a child of it) so its own opacity/position stay
+   entirely under script.js's control rather than fading with the hero.
+   Its rect is interpolated every scroll tick between a full-viewport
+   cover and #videoPanelTarget's live position inside the hero (see
+   updateHeroVideo in script.js) — plain top/left/width/height, not a CSS
+   transition, since the values change continuously with scroll, not at
+   one discrete breakpoint. Once landed, script.js simply stops updating
+   these and it stays exactly where it is — still fixed, so it remains on
+   screen (and keeps playing) no matter how much further you scroll past
+   it. Pin-mode only: without the scroll-driven crossfade there's no
+   "progress" to morph against, so it would otherwise just sit fixed over
+   the whole page on a normal stacked layout. */
+html.pin-mode .hero-video-frame {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Without pin-mode (narrow screens / phones) there's no scroll morph, so the
+   video just stays a plain full-screen background behind the hero. */
+html:not(.pin-mode) .hero-video-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  z-index: 0;
+  overflow: hidden;
+}
+
+html:not(.pin-mode) .hero-video-play {
+  display: none;
+}
+
+/* Without pin-mode there's no scroll "progress" driving the morph, so the
+   showcase section would otherwise just show its heading over an empty,
+   permanently invisible placeholder box — skip the whole section there. */
+html:not(.pin-mode) #showcase {
+  display: none;
+}
+
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-video-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(13, 19, 33, 0.5), rgba(13, 19, 33, 0.72));
+  transition: opacity 0.3s ease;
+}
+
+html.pin-mode .hero-video-frame.is-landed {
+  /* Above the active panel's own content (so the landed panel + its play
+     button are actually clickable) — but only once landed. While it's
+     still full-bleed over the hero, it stays at z-index: 0 specifically so
+     the hero's own nav/badge/copy (z-index: 2, see .hero-nav etc.) keep
+     rendering on top of it, as a background should. Needs the same
+     `html.pin-mode` prefix as the base rule below, not just a matching
+     class count — a bare `.hero-video-frame.is-landed` selector is less
+     specific than `html.pin-mode .hero-video-frame` (extra type selector)
+     and would lose to it regardless of source order. */
+  z-index: 10;
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-soft);
+  /* Own aspect-ratio rather than height: 100% of #videoPanelTarget once
+     docked (see dockVideoIntoTarget in script.js) — derives height from
+     its own (real, 100%-of-target) width directly, so the frame's shape
+     never depends on #videoPanelTarget's own rendered height agreeing
+     with this at all. Needs height: auto here too — aspect-ratio is
+     ignored whenever height already has a definite value, and the base
+     rule below still says height: 100vh (that's only meant for the
+     pre-landed, position: fixed state); clearing the inline height in
+     dockVideoIntoTarget isn't enough on its own to un-set that. */
+  height: auto;
+  aspect-ratio: 16 / 9;
+  /* A quick overshoot pop right as it docks — reads as the panel
+     "clicking" into place rather than just quietly stopping. */
+  animation: video-dock-snap 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes video-dock-snap {
+  0% { transform: scale(0.92); }
+  55% { transform: scale(1.035); }
+  100% { transform: scale(1); }
+}
+
+.hero-video-frame.is-landed .hero-video-overlay {
+  opacity: 0.3;
+}
+
+.hero-video-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(240, 235, 216, 0.94);
+  color: var(--accent-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0s linear 0.25s;
+}
+
+.hero-video-frame.is-landed .hero-video-play {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0s;
+}
+
+.hero-video-play:hover {
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+/* ---------- Video popup ---------- */
+/* Clicking the play button opens the same clip full-size in this overlay
+   (with real controls, unmuted) instead of just unmuting it in place —
+   the background hero video keeps playing muted/looped underneath,
+   untouched. */
+.video-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease, visibility 0s linear 0.25s;
+}
+
+.video-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.25s ease, visibility 0s;
+}
+
+.video-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(30, 20, 12, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.video-modal-inner {
+  position: relative;
+  z-index: 1;
+  width: min(1100px, 92vw);
+}
+
+.video-modal-player {
+  display: block;
+  width: 100%;
+  max-height: 84vh;
+  border-radius: var(--radius-lg);
+  background: #000;
+  box-shadow: var(--shadow-soft);
+}
+
+.video-modal-close {
+  position: absolute;
+  top: -44px;
+  right: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+  color: #f6eedf;
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.video-modal-close:hover {
+  background: rgba(255, 255, 255, 0.16);
+  transform: scale(1.06);
+}
+
+@media (max-width: 620px) {
+  .video-modal-close {
+    top: -40px;
+    width: 32px;
+    height: 32px;
+    font-size: 1.1rem;
+  }
+}
+
+/* Lives inside the hero panel itself now, not a separate pinned section —
+   centered over the same spot the hero title occupies, fading in via
+   script.js (tied to the same morphT that drives the video's own shrink)
+   as the header/slogan fade out, so the video settles into this flanked
+   layout right in place rather than handing off to another section. Once
+   the hero's own pinned dwell ends, the whole panel (video now docked
+   in-flow inside #videoPanelTarget below) scrolls away normally with it. */
+.video-showcase-inner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  width: min(700px, calc(100% - 80px));
+  opacity: 0;
+  /* Caption sits below the video now, not flanking it — during the
+     shrink, the labels used to sit at a fixed spot the video would
+     briefly pass under/through mid-scroll before settling beside it;
+     stacking them removes that overlap entirely at every scroll point. */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(16px, 3vw, 28px);
+}
+
+.video-showcase-caption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4em;
+  margin: 0;
+}
+
+.video-showcase-label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.4rem, 2.6vw, 2.2rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.video-panel-target {
+  /* Also capped by the viewport's height so the panel + caption never
+     grow taller than the window and run into the nav above them. */
+  width: min(640px, calc((100vh - 240px) * 16 / 9));
+  min-width: 220px;
+  max-width: 100%;
+  /* Fixed 16:9 — matching the viewport's own (usually quite wide/
+     landscape) aspect ratio instead made the landed panel read as too
+     wide, even though it avoided object-fit: cover subtly re-cropping
+     the footage as it lands. Traded back for the cleaner, more familiar
+     video-panel shape. */
+  aspect-ratio: 16 / 9;
+  visibility: hidden;
+}
+
+/* ---------- Trusted-by logo marquee ---------- */
+.trusted-by-section {
+  padding: 64px 0 88px;
+}
+
+.trusted-by-head {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.trusted-by-label {
+  display: inline-block;
+  padding: 10px 22px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  color: var(--text-secondary);
+}
+
+/* Two rows, each an overflow-hidden viewport onto a track holding the logo
+   set twice back to back — animating the track exactly one set-width to
+   the left (or right, for the second row) loops seamlessly, since the
+   moment the first copy scrolls fully out, the second is sitting in the
+   exact spot the first started in. */
+.logo-marquee {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.logo-marquee-row {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.logo-marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 18px;
+  /* Tile set is repeated several times per half (see index.html) so the
+     track stays wider than even large desktop viewports and the loop
+     never shows a gap; duration is scaled up by the same repeat factor
+     so the per-pixel scroll speed (and the mobile look) is unchanged. */
+  animation: logo-marquee 200s linear infinite;
+}
+
+.logo-marquee-track-reverse {
+  animation-name: logo-marquee-reverse;
+  animation-duration: 281s;
+}
+
+@keyframes logo-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes logo-marquee-reverse {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+.logo-tile {
+  flex: 0 0 auto;
+  width: 260px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+}
+
+.logo-tile img {
+  max-width: 160%;
+  max-height: 160%;
+  object-fit: contain;
+}
+
+/* Gohan's circular logo has almost no internal padding of its own, so at
+   the same scale as the other (heavily padded) logos it reads oversized. */
+.logo-tile img[alt="Gohan"] {
+  max-width: 120%;
+  max-height: 120%;
+}
+
+/* Troulis and Remax have a lot of internal whitespace baked into the source
+   file, so they need extra scale to read at the same size as the rest. */
+.logo-tile img[alt="Troulis"],
+.logo-tile img[alt="Remax"] {
+  max-width: 200%;
+  max-height: 200%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-marquee-track {
+    animation: none;
+  }
+}
+
+html.pin-mode .panel {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  opacity: 0;
+  pointer-events: none;
+  transform-origin: 50% 50%;
+  will-change: opacity, transform;
+  /* Only the outer page scrollbar (driving the pinned-scroll progress)
+     should ever be visible. Each panel can still scroll internally as a
+     fallback when its content doesn't fit one viewport, but its own
+     scrollbar would sit flush against the outer one and read as a
+     duplicate. */
+  scrollbar-width: none;
+}
+
+html.pin-mode .panel::-webkit-scrollbar {
+  display: none;
+}
+
+html.pin-mode .panel.is-active {
+  pointer-events: auto;
+}
+
+html.pin-mode #top {
+  opacity: 1;
+}
+
+.section-alt {
+  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.02) 20%, rgba(255, 255, 255, 0.02) 80%, transparent);
+}
+
+/* Below the logo carousel (which stays on the dark theme, right after
+   the video), the rest of the page switches to a white background —
+   redefining the theme variables here (rather than overriding every
+   individual component) lets everything downstream that already reads
+   var(--bg-raised)/var(--text-primary)/etc. — cards, kickers, borders,
+   shadows — pick up light-appropriate values for free through
+   inheritance, with no separate light-mode rules to keep in sync. */
+#services,
+#about,
+#contact {
+  --bg-deep: #f6eedf;    /* Cream */
+  --bg-base: #f6eedf;
+  --bg-raised: #eadfc7;  /* Hazelnut tint */
+  --bg-raised-2: #e0cfae; /* deeper Hazelnut tint */
+  --border-soft: rgba(30, 20, 12, 0.08);
+  --border-strong: rgba(30, 20, 12, 0.18);
+  --magenta: #4a331f;    /* Brown */
+  --magenta-bright: #1e140c; /* Espresso, for strong emphasis */
+  --magenta-glow: rgba(30, 20, 12, 0.12);
+  --text-primary: #1e140c;   /* Espresso */
+  --text-secondary: #4a331f; /* Brown */
+  --text-muted: #8a7157;
+  --shadow-soft: 0 20px 60px rgba(30, 20, 12, 0.08);
+  background: var(--bg-base);
+  color: var(--text-primary);
+}
+
+/* Headings in these light sections were reading as near-black (Espresso,
+   --text-primary) — warm them to Brown instead, leaving body copy as-is. */
+#services h1, #services h2, #services h3, #services h4,
+#about h1, #about h2, #about h3, #about h4,
+#contact h1, #contact h2, #contact h3, #contact h4 {
+  color: #3f1f0f;
+}
+
+.section-head {
+  max-width: 640px;
+  margin: 0 auto 44px;
+  text-align: center;
+}
+
+.section-kicker {
+  display: inline-block;
+  font-family: var(--font-display);
+  color: var(--magenta-bright);
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 12px;
+}
+
+.section-head h2 {
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+}
+
+.section-sub {
+  color: var(--text-secondary);
+  margin-bottom: 0;
+}
+
+/* ---------- About ---------- */
+.about-body {
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  max-width: 60ch;
+}
+
+/* ---------- Results / stats banner ---------- */
+.results {
+  margin-top: clamp(48px, 7vw, 80px);
+  text-align: center;
+  padding: clamp(40px, 6vw, 72px) clamp(20px, 4vw, 44px);
+  background: #3f1f0f;
+  border-radius: 8px 48px 8px 8px;
+  color: #ebe7e4;
+}
+
+.results-kicker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ebe7e4;
+  opacity: 0.72;
+  margin: 0 0 clamp(28px, 4vw, 40px);
+}
+
+.results-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ebe7e4;
+  flex: none;
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.result-stat {
+  padding: clamp(18px, 3vw, 28px) 12px;
+  background: rgba(235, 231, 228, 0.08);
+  border-radius: 4px 22px 4px 4px;
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.result-stat:hover {
+  transform: translateY(-4px);
+  background: rgba(235, 231, 228, 0.14);
+}
+
+.result-num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.4rem, 4vw, 2.4rem);
+  color: #ebe7e4;
+  margin: 0 0 6px;
+  letter-spacing: -0.01em;
+}
+
+.result-label {
+  margin: 0;
+  color: rgba(235, 231, 228, 0.68);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+/* ---------- Services ---------- */
+.svc-split {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: clamp(40px, 6vw, 96px);
+  align-items: start;
+}
+
+.svc-lead .section-kicker {
+  margin-bottom: 12px;
+}
+
+.svc-lead-title {
+  font-size: clamp(1.7rem, 5vw, 3rem);
+  line-height: 1.05;
+  margin: 0.25em 0 0;
+}
+
+.svc-lead-text {
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  max-width: 38ch;
+  margin-top: 1.1em;
+}
+
+.svc-accordion {
+  border-top: 1px solid var(--border-soft);
+}
+
+.acc-row {
+  position: relative;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+/* Sits right on the row's own bottom border — empty by default (click
+   accordion mode, see .is-open below), filled 0→100% by JS per scroll
+   tick when the section is pinned (see initServicesPinnedTabs). */
+.acc-progress {
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  bottom: -1px;
+  height: 2px;
+  background: transparent;
+}
+
+.acc-progress-fill {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: var(--amber);
+  transition: width 0.2s ease;
+}
+
+.acc-row.is-open .acc-progress-fill {
+  width: 100%;
+}
+
+/* Pinned mode sets the fill width on every scroll tick — a CSS
+   transition would lag a tick behind and fight the scroll-synced value. */
+html.pin-mode #svcPinWrap .acc-progress-fill {
+  transition: none;
+}
+
+.acc-summary {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  padding: 22px 2px;
+  font-family: var(--font-display);
+  font-size: clamp(0.98rem, 2.2vw, 1.35rem);
+  color: var(--text-primary);
+  transition: color 0.25s ease;
+}
+
+.acc-row.is-open .acc-summary {
+  color: var(--magenta-bright);
+}
+
+.acc-arrow {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  margin-top: -4px;
+  border-right: 2px solid var(--text-secondary);
+  border-bottom: 2px solid var(--text-secondary);
+  transform: rotate(45deg);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.acc-row.is-open .acc-arrow {
+  transform: rotate(225deg);
+  border-color: var(--magenta-bright);
+}
+
+.acc-body {
+  height: 0;
+  overflow: hidden;
+  transition: height 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.acc-body-inner {
+  padding: 0 2px 26px;
+}
+
+.acc-sub {
+  display: block;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+
+.acc-desc {
+  margin: 10px 0 0;
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  line-height: 1.7;
+  max-width: 56ch;
+}
+
+.svc-bullets {
+  margin: 10px 0 0;
+  padding-left: 1.2em;
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  line-height: 1.7;
+  max-width: 56ch;
+  list-style: decimal;
+}
+
+.svc-bullets li {
+  margin: 2px 0;
+}
+
+/* Pinned scroll-driven tabs — same sticky-stage technique as the hero's
+   #pinWrap/.pin-stage (see the "Pinned scrollytelling mode" block below),
+   just scoped to the services section instead of the whole viewport.
+   JS sets the wrap's own height per the tab count (initServicesPinnedTabs);
+   outside pin-mode these two are unstyled divs and the section behaves as
+   a plain click accordion. */
+/* .section's overflow: hidden makes the section a scroll container, which
+   silently disables position: sticky on .svc-pin-stage inside it (the tabs
+   would change on scroll while the whole section scrolled away). `clip`
+   still trims the doodles but doesn't create a scroll container. */
+html.pin-mode #services {
+  overflow: visible;
+  overflow: clip;
+}
+
+html.pin-mode .svc-pin-wrap {
+  position: relative;
+}
+
+html.pin-mode .svc-pin-stage {
+  position: sticky;
+  top: 0;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+}
+
+html.pin-mode .svc-pin-stage > .wrap {
+  width: 100%;
+}
+
+/* ---------- Contact ---------- */
+.contact-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 32px;
+  max-width: 760px;
+  margin-bottom: 36px;
+}
+
+.form-field {
+  position: relative;
+  margin-bottom: 26px;
+}
+
+.form-field.full {
+  grid-column: 1 / -1;
+}
+
+.form-field label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.form-field input,
+.form-field textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px solid var(--border-strong);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  padding: 8px 2px 12px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.form-field textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+  border-color: var(--magenta);
+}
+
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.contact-form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.form-note {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  margin: 0;
+}
+
+.contact-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  max-width: 760px;
+  margin-bottom: 28px;
+}
+
+.contact-divider::before,
+.contact-divider::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: var(--border-soft);
+}
+
+.contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+/* ---------- Footer (embedded at the bottom of the contact panel) ---------- */
+.embedded-footer {
+  margin-top: 56px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-soft);
+}
+
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.footer-inner p {
+  margin: 0;
+}
+
+/* ---------- Scroll reveal ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- Responsive ---------- */
+/* Once the window is too narrow for badge, centered nav and CTA to share
+   one row, the nav drops to its own centered row under them so nothing
+   sits on top of anything else. */
+@media (max-width: 1100px) {
+  .hero {
+    padding-top: 160px;
+  }
+
+  .hero .brand-badge-text {
+    font-size: 1.6rem;
+  }
+
+  .hero-nav {
+    top: 78px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: calc(100vw - 40px);
+  }
+
+  .floating-nav {
+    max-width: calc(100vw - 24px);
+  }
+}
+
+@media (max-width: 860px) {
+  .brand-badge-logo {
+    height: 60px;
+    margin: -21px 0 0 -6px;
+  }
+
+  .brand-badge-logo--wide {
+    height: 20px;
+    margin: -1px 0 0 -1px;
+  }
+
+  .hero {
+    padding: 120px 0 100px;
+    /* Full-screen hero so the slogan can sit at the bottom, right above
+       "Explore", like on desktop. */
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+
+  .hero-scroll {
+    bottom: 24px;
+  }
+
+  .svc-split {
+    grid-template-columns: 1fr;
+  }
+
+  .results-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .contact-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  /* script.js fades .brand-badge in/out by scroll progress through the
+     pinned hero — math that goes wrong once the hero stops actually
+     pinning at narrow widths, so pin it visible here regardless of
+     whatever inline opacity/transform it computed. */
+  .hero .brand-badge {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .brand-badge {
+    top: 14px;
+    left: 14px;
+  }
+
+  .brand-badge-logo {
+    height: 110px;
+    margin: -20px 0 0 0;
+  }
+
+  .brand-badge-logo--wide {
+    height: 26px;
+    margin: -2px 0 0 0;
+  }
+
+  /* Matches .brand-badge's top offset at this same breakpoint (rather
+     than only from 520px down) so there's no width range where the logo
+     has already moved to top:14px but the CTA button is still at the
+     wider layout's top:24px. line-height:1 trims the button back down
+     close to the logo's own 26px height so their vertical centers land
+     in the same place instead of the button reading visibly lower. */
+  .hero-top-right {
+    top: 14px;
+    right: 14px;
+    gap: 10px;
+  }
+
+  .hero-top-right .btn {
+    padding: 8px 14px;
+    font-size: 0.78rem;
+    line-height: 1;
+  }
+
+  .hero {
+    flex-direction: column;
+    align-items: center;
+    /* Slogan + Explore hug the bottom edge of the screen. Spacing scales
+       with the device's visible height (svh) so short phones don't push
+       Explore off-screen and tall ones don't leave a big gap. */
+    padding-top: clamp(104px, 15svh, 150px);
+    padding-bottom: calc(clamp(14px, 3svh, 28px) + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* Slogan scales with both the screen's width and its visible height, so
+     it fits any phone (small iPhone SE up to tall Android) without
+     spilling out or wrapping into the bottom. */
+  .hero-title {
+    font-size: clamp(1.6rem, min(9vw, 5.4svh), 3rem);
+    gap: clamp(10px, 2.6svh, 28px);
+  }
+
+  .hero-title-line-1,
+  .hero-title-line-2 {
+    max-width: 92%;
+  }
+
+  /* Column layout: push the slogan to the bottom edge, with Explore
+     directly beneath it. */
+  .hero .hero-inner {
+    align-self: stretch;
+    margin-top: auto;
+  }
+
+  .hero-scroll {
+    position: static;
+    transform: none;
+    margin-top: clamp(12px, 3svh, 24px);
+  }
+}
+
+@media (max-width: 520px) {
+  .wrap {
+    padding: 0 20px;
+  }
+
+  .brand-badge {
+    top: 14px;
+    left: 14px;
+  }
+
+  .hero .brand-badge-text {
+    font-size: clamp(0.95rem, 4.6vw, 1.3rem);
+  }
+
+  .hero-top-right {
+    top: 14px;
+    right: 14px;
+    gap: 10px;
+  }
+
+  .hero-top-right .btn {
+    padding: 8px 14px;
+    font-size: 0.78rem;
+  }
+
+  .hero-nav {
+    top: 60px;
+    gap: 14px;
+    max-width: 84vw;
+  }
+
+  .hero-nav a {
+    font-size: 0.7rem;
+  }
+
+  .results-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .section {
+    animation: none;
+  }
+
+  html.pin-mode #pinWrap {
+    height: auto;
+  }
+
+  html.pin-mode .pin-stage {
+    position: static;
+    height: auto;
+    overflow: visible;
+  }
+
+  html.pin-mode .pin-bg-atom {
+    display: none;
+  }
+
+  html.pin-mode .panel {
+    position: static;
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    animation: none;
+    overflow: visible;
+  }
+
+  .btn,
+  .acc-body,
+  .acc-arrow,
+  .acc-summary,
+  .result-stat {
+    transition: none;
+  }
+
+  .doodle {
+    animation: none;
+  }
+
+  .hero-scroll-dot {
+    animation: none;
+  }
+
+  .glow-text {
+    animation: none;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* =========================================================
+   Case Studies page (case-studies.html) — a big, full-bleed
+   gallery grid instead of the compact in-page work-grid cards.
+   ========================================================= */
+/* Same logo top-left, same centered menu, same top-right CTA as the index
+   hero's own nav, at the exact same coordinates — this reuses .brand-badge/
+   .hero-nav/.hero-top-right verbatim (see the hero's own markup/CSS)
+   instead of a parallel set of rules, so the two can't drift apart. This
+   bar is just their positioning context: relative, with a fixed height
+   since those children are all position: absolute. */
+.cs-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  height: 92px;
+  background: transparent;
+}
+
+@media (max-width: 900px) {
+  .cs-header .hero-nav .nav-dropdown {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .cs-header .hero-nav {
+    display: none;
+  }
+}
+
+.cs-main {
+  padding: clamp(48px, 8vw, 96px) clamp(20px, 5vw, 56px) clamp(80px, 10vw, 140px);
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.cs-title {
+  font-size: clamp(2.4rem, 7vw, 5rem);
+  margin-bottom: clamp(36px, 6vw, 64px);
+}
+
+.cs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(20px, 3vw, 32px);
+}
+
+.cs-item {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--bg-raised-2);
+  text-decoration: none;
+}
+
+.cs-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.cs-item.is-logo {
+  background: #ebe7e4;
+}
+
+.cs-item.is-logo img {
+  object-fit: contain;
+  padding: 48px;
+}
+
+.cs-item:hover img {
+  transform: scale(1.05);
+}
+
+.cs-item-name {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  background: rgba(13, 19, 33, 0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.cs-item.is-logo .cs-item-name {
+  background: rgba(13, 19, 33, 0.85);
+  color: var(--text-primary);
+}
+
+.cs-footer {
+  padding: 32px clamp(20px, 5vw, 56px) 40px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* Extra clearance on service pages so the fixed .svc-switch bar (see
+   above) never sits on top of the footer text once you've scrolled all
+   the way down. */
+.svc-detail-main + .cs-footer {
+  padding-bottom: 110px;
+}
+
+@media (max-width: 760px) {
+  .cs-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   Service detail pages (service-*.html) — one per dropdown item,
+   each with its own accent-tinted background (set inline per page
+   by overriding --bg/--bg-raised/--bg-raised-2/--amber* on :root).
+   ========================================================= */
+.svc-detail-main {
+  padding: clamp(64px, 10vw, 120px) clamp(20px, 5vw, 56px) clamp(80px, 10vw, 140px);
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.svc-hero {
+  text-align: center;
+  margin-bottom: clamp(40px, 6vw, 64px);
+}
+
+.svc-hero-title {
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  line-height: 1.05;
+  margin-bottom: 10px;
+}
+
+.svc-hero-tagline {
+  font-size: clamp(1.1rem, 2.4vw, 1.5rem);
+  color: var(--text-secondary);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+
+/* Fixed to the viewport bottom (not the document) so it stays put and
+   reachable no matter how far down the page you've scrolled, rather than
+   sitting once in the flow at the end of the content. */
+.svc-switch {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  z-index: 40;
+  max-width: calc(100vw - 32px);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px;
+  /* iOS-style frosted glass — colorless (neutral charcoal), same
+     treatment as .nav-dropdown-panel — and always dark regardless of page
+     theme, so .svc-switch-item below uses fixed light colors rather than
+     var(--text-secondary)/var(--text-primary), which flip to dark on the
+     cream page and would render dark-on-dark. */
+  background: rgba(18, 18, 18, 0.94);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-soft);
+}
+
+.svc-switch-toggle {
+  display: none;
+}
+
+/* On desktop this wrapper doesn't exist layout-wise — its .svc-switch-item
+   children lay out directly in the parent .svc-switch flex row exactly as
+   if there were no wrapper at all. The mobile media query below turns it
+   back into a real (collapsible) box. */
+.svc-switch-list {
+  display: contents;
+}
+
+.svc-switch-item {
+  padding: 10px 18px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #dcb98c;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.svc-switch-item:hover {
+  color: #f6eedf;
+}
+
+.svc-switch-item.is-active {
+  background: var(--amber);
+  color: var(--accent-ink);
+}
+
+@media (max-width: 560px) {
+  /* Five items wrapping/scrolling in a row still crowds a phone screen —
+     collapse to a burger toggle instead, expanding into a stacked list
+     above it (the bar stays bottom-anchored, so it grows upward). */
+  .svc-switch {
+    bottom: 14px;
+    left: 12px;
+    right: 12px;
+    max-width: none;
+    width: auto;
+    transform: none;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 6px;
+    gap: 0;
+    /* The default pill radius (999px) is fine for the closed, single-row
+       toggle, but on a tall open box it curves the corners into an oval
+       that clips into the toggle row and the list items — use a normal
+       rounded-rectangle radius instead whenever it's open. */
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .svc-switch:not(.is-open) {
+    border-radius: var(--radius-pill);
+  }
+
+  .svc-switch-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 14px;
+    background: none;
+    border: none;
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #f6eedf;
+    cursor: pointer;
+  }
+
+  .svc-switch-toggle-icon {
+    position: relative;
+    width: 18px;
+    height: 12px;
+    flex: none;
+  }
+
+  .svc-switch-toggle-icon::before,
+  .svc-switch-toggle-icon::after,
+  .svc-switch-toggle-icon > span {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 5px;
+    height: 2px;
+    background: #f6eedf;
+    border-radius: 2px;
+    transition: transform 0.25s ease, opacity 0.2s ease;
+  }
+
+  .svc-switch-toggle-icon::before {
+    top: 0;
+  }
+
+  .svc-switch-toggle-icon::after {
+    top: 10px;
+  }
+
+  .svc-switch.is-open .svc-switch-toggle-icon::before {
+    top: 5px;
+    transform: rotate(45deg);
+  }
+
+  .svc-switch.is-open .svc-switch-toggle-icon > span {
+    opacity: 0;
+  }
+
+  .svc-switch.is-open .svc-switch-toggle-icon::after {
+    top: 5px;
+    transform: rotate(-45deg);
+  }
+
+  .svc-switch-list {
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 4px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  .svc-switch.is-open .svc-switch-list {
+    display: flex;
+  }
+
+  .svc-switch-item {
+    text-align: center;
+  }
+}
+
+.svc-detail-eyebrow {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--amber-bright);
+  margin-bottom: 18px;
+}
+
+.svc-detail-lead {
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 62ch;
+  margin-bottom: clamp(40px, 6vw, 64px);
+}
+
+.svc-detail-list {
+  border-top: 1px solid var(--border-soft);
+  margin-bottom: clamp(48px, 7vw, 72px);
+}
+
+.svc-detail-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  padding: 20px 4px;
+  border-bottom: 1px solid var(--border-soft);
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.svc-detail-list li::before {
+  content: "";
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--amber);
+  margin-top: 6px;
+}
+

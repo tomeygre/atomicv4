@@ -1,0 +1,9 @@
+.DS_Store
+Thumbs.db
+node_modules/
+.vscode/
+*.log
+
+# Source branding deliverables (pptx/pdf/zip/raw fonts) — not part of the
+# deployed site; the fonts actually used are already copied into assets/fonts/
+new branding/
