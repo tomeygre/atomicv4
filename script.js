@@ -851,12 +851,26 @@
     var videoModalClose = document.getElementById("videoModalClose");
     var videoModalBackdrop = document.getElementById("videoModalBackdrop");
 
+    var videoModalScrollY = 0;
+
     function openVideoModal() {
       if (!videoModal || !videoModalPlayer) {
         return;
       }
       videoModal.classList.add("is-open");
       videoModal.setAttribute("aria-hidden", "false");
+      // This is a pinned-scroll page — scroll position alone drives the
+      // hero/video/panel choreography. A plain body { overflow: hidden }
+      // lock still let the page silently jump to scrollY 0 the instant it
+      // was applied (removing the scrollbar removes body's own scroll
+      // offset), which the pinned math read as "scrolled to top" — so
+      // scrolling at all after closing snapped things into whatever state
+      // matched wherever the page had actually (invisibly) ended up.
+      // Pinning body at its exact current pixel offset instead means nothing
+      // about scroll position changes at all while the modal is open.
+      videoModalScrollY = window.scrollY;
+      document.body.classList.add("is-video-modal-open");
+      document.body.style.top = -videoModalScrollY + "px";
       videoModalPlayer.currentTime = 0;
       videoModalPlayer.play().catch(function () {});
     }
@@ -867,6 +881,9 @@
       }
       videoModal.classList.remove("is-open");
       videoModal.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("is-video-modal-open");
+      document.body.style.top = "";
+      window.scrollTo(0, videoModalScrollY);
       videoModalPlayer.pause();
     }
 
@@ -903,7 +920,6 @@
       } else if (!isLanded && wasLanded) {
         videoLanded = false;
         heroVideoFrame.classList.remove("is-landed");
-        setVideoPlaying(false);
         heroVideo.muted = true;
         heroVideo.currentTime = 0;
         heroVideo.play().catch(function () {});

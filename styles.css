@@ -340,6 +340,19 @@ body.is-loading {
   overflow: hidden;
 }
 
+/* Pins the page at its exact scroll position (script.js sets `top` to the
+   negative of that offset) instead of just `overflow: hidden` — on this
+   pinned-scroll page, hiding overflow alone still visibly snapped
+   scrollY to 0 the instant it applied, which the pin math read as "back
+   at the top", so any scroll after closing the popup jumped to whatever
+   state actually matched the page's real (invisibly reset) position. */
+body.is-video-modal-open {
+  position: fixed;
+  left: 0;
+  right: 0;
+  width: 100%;
+}
+
 .loader-inner {
   display: flex;
   flex-direction: column;
@@ -1482,20 +1495,33 @@ html.pin-mode .hero-video-frame.is-landed {
   display: block;
   width: 100%;
   max-height: 84vh;
+  /* svh = the actually-visible height with mobile browser toolbars
+     showing, so the player (and its close button) can't end up taller
+     than what's really on screen there. */
+  max-height: 84svh;
   border-radius: var(--radius-lg);
   background: #000;
   box-shadow: var(--shadow-soft);
 }
 
+/* Overlaps the video's own top-right corner rather than floating above
+   it — on a short/landscape mobile viewport a short, wide video leaves
+   little to no room above it for an external button (it was landing
+   off-screen, above the viewport edge); sitting on the video itself is
+   reachable no matter the video's rendered size or the screen's
+   orientation. */
 .video-modal-close {
   position: absolute;
-  top: -44px;
-  right: 0;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(20, 14, 8, 0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   color: #f6eedf;
   font-size: 1.3rem;
   line-height: 1;
@@ -1504,16 +1530,21 @@ html.pin-mode .hero-video-frame.is-landed {
 }
 
 .video-modal-close:hover {
-  background: rgba(255, 255, 255, 0.16);
+  background: rgba(20, 14, 8, 0.85);
   transform: scale(1.06);
 }
 
 @media (max-width: 620px) {
+  .video-modal {
+    padding: 12px;
+  }
+
   .video-modal-close {
-    top: -40px;
-    width: 32px;
-    height: 32px;
-    font-size: 1.1rem;
+    top: 8px;
+    right: 8px;
+    width: 34px;
+    height: 34px;
+    font-size: 1.15rem;
   }
 }
 
